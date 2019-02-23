@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+last_commit=`git log --oneline -n 1`
+
+if [[ $last_commit =~ "Cut Release" ]]; then
+    echo "On a release commit. Releasing."
+    twine upload dist/*
+    exit $?
+else
+    echo "Not a release commit. Not Releasing."
+fi

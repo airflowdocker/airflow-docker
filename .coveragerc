@@ -1,0 +1,7 @@
+[run]
+branch = True
+
+[paths]
+airflow_docker_helper =
+    src/airflow_docker/
+    .tox/**/airflow_docker/

@@ -1,0 +1,177 @@
+version: 2
+
+test-tox-env: &test-tox-env
+  run:
+    name: Run Tests
+    command: |
+      pip install tox
+      tox
+
+setup-env: &setup-env
+  run:
+    name: Setup Environment
+    command: |
+      echo "We good".
+
+jobs:
+
+  python-2.7-test:
+    docker:
+      - image: python:2.7.15
+    environment:
+      - TOXENV=py27
+    steps:
+      - checkout
+      - <<: *setup-env
+      - attach_workspace:
+          at: tmp
+      - <<: *test-tox-env
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - .coverage.py27
+
+  python-3.5-test:
+    docker:
+      - image: python:3.5.5
+    environment:
+      - TOXENV=py35
+    steps:
+      - checkout
+      - <<: *setup-env
+      - attach_workspace:
+          at: tmp
+      - <<: *test-tox-env
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - .coverage.py35
+
+  python-3.6-test:
+    docker:
+      - image: python:3.6.5
+    environment:
+      - TOXENV=py36
+    steps:
+      - checkout
+      - <<: *setup-env
+      - attach_workspace:
+          at: tmp
+      - <<: *test-tox-env
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - .coverage.py36
+
+  python-3.7-test:
+    docker:
+      - image: python:3.7.0
+    environment:
+      - TOXENV=py37
+    steps:
+      - checkout
+      - <<: *setup-env
+      - attach_workspace:
+          at: tmp
+      - <<: *test-tox-env
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - .coverage.py37
+
+  coverage:
+    docker:
+      - image: python:3.6.5
+    steps:
+      - checkout
+      - <<: *setup-env
+      - attach_workspace:
+          at: tmp
+      - run:
+          command: |
+            pip install tox
+            tox -e coverage
+      - run:
+          command: |
+            pip install codecov
+            codecov --file tmp/coverage.xml
+      - store_artifacts:
+          path: tmp
+
+  lint:
+    docker:
+      - image: python:3.6.5
+    steps:
+      - checkout
+      - run:
+          command: |
+            pip install tox
+            tox -e lint
+
+  pypi:
+    docker:
+      - image: python:3.6.5
+    steps:
+      - checkout
+      - <<: *setup-env
+      - attach_workspace:
+          at: tmp
+      - run:
+          command: |
+            pip install wheel twine
+            ./bin/build
+            ./bin/release-pypi
+            cp -r dist tmp/dist
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - dist
+
+  docker:
+    machine: true
+    steps:
+      - checkout
+      - attach_workspace:
+          at: tmp
+      - run:
+          command: cp -r tmp/dist dist
+      - run:
+          command: ./bin/build-images
+      - run:
+          command: ./bin/tag-images
+      - run:
+          command: ./bin/release-docker
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - python-2.7-test
+      - python-3.5-test
+      - python-3.6-test
+      - python-3.7-test
+      - coverage:
+          requires:
+            - python-2.7-test
+            - python-3.5-test
+            - python-3.6-test
+            - python-3.7-test
+      - lint
+      - pypi:
+          requires:
+            - lint
+            - coverage
+          filters:
+            branches:
+              only:
+                - /^master$/
+
+      - docker:
+          requires:
+            - coverage
+            - lint
+            - pypi
+          filters:
+            branches:
+              only:
+                - /^master$/

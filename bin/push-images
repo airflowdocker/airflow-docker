@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+
+docker push airflowdocker/service:$AIRFLOW_DOCKER_VERSION
+docker push airflowdocker/service
+
+docker push airflowdocker/example-tasks:$AIRFLOW_DOCKER_VERSION
+docker push airflowdocker/example-tasks
+
