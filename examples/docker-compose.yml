@@ -1,0 +1,55 @@
+version: "3"
+services:
+
+  db:
+    image: postgres:10
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=airflow
+      - POSTGRES_USER=airflow
+      - POSTGRES_PASSWORD=airflow
+
+  webserver:
+    image: airflowdocker/service
+    restart: always
+    command:
+      - "webserver"
+    ports:
+      - 8080:8080
+    volumes:
+      - ${AIRFLOW_DAG_FOLDER:-./dags}:/airflow/dags
+
+  scheduler:
+    image: airflowdocker/service
+    restart: always
+    command:
+      - "scheduler"
+    volumes:
+      - ${AIRFLOW_DAG_FOLDER:-./dags}:/airflow/dags
+
+  worker:
+    image: airflowdocker/service
+    restart: always
+    command:
+      - "worker"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${AIRFLOW_DAG_FOLDER:-./dags}:/airflow/dags
+      - ${HOST_TEMPORARY_DIRECTORY:-/tmp/airflow}:/tmp/airflow
+    user: root
+    environment:
+      - C_FORCE_ROOT=1
+      - AIRFLOW__WORKER__HOST_TEMPORARY_DIRECTORY=${HOST_TEMPORARY_DIRECTORY:-/tmp/airflow}
+
+  flower:
+    image: airflowdocker/service
+    restart: always
+    command:
+      - "flower"
+    ports:
+      - 5555:5555
+
+  redis:
+    image: redis:3.2.4
+    restart: always

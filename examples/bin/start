@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+
+#!/usr/bin/env bash
+
+set -e
+
+docker-compose up -d db
+
+sleep 10
+
+docker-compose run -e AIRFLOW__CORE__DAGS_FOLDER=/tmp --rm webserver upgradedb
+docker-compose up -d webserver
+sleep 10
+docker-compose logs webserver
+docker-compose up -d
