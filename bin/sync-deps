@@ -2,7 +2,7 @@
 
 # Library Deps
 export SLUGIFY_USES_TEXT_UNIDECODE=${SLUGIFY_USES_TEXT_UNIDECODE:-yes}
-pip-compile -o deps/requirements.txt deps/requirements.in
+pip-compile -o deps/requirements.txt --upgrade-package airflow-docker-helper deps/requirements.in
 pip-compile -o deps/testing-requirements.txt deps/requirements.txt deps/testing-requirements.in
 pip-compile -o deps/docs-requirements.txt deps/requirements.txt deps/testing-requirements.txt deps/docs-requirements.in
 pip-compile -o deps/linting-requirements.txt deps/requirements.txt deps/testing-requirements.txt deps/docs-requirements.txt deps/linting-requirements.in
