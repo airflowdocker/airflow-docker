@@ -405,7 +405,7 @@ class Sensor(BaseDockerOperator, BaseSensorOperator):
         return self._execute(context)
 
     def do_meta_operation(self, context, host_tmp_dir):
-        return self.host_client.host.sensor_outcome(host_tmp_dir)
+        return self.host_client.sensor_outcome(host_tmp_dir)
 
 
 class ShortCircuitOperator(ShortCircuitMixin, Operator):
