@@ -1,3 +1,4 @@
-apache-airflow[postgres,crypto,celery,docker,password,redis,s3]==1.10.2
+apache-airflow[crypto,celery,docker,password,redis,s3]==1.10.2
 airflow-docker-helper
 redis<3.0.0
+psycopg2-binary

@@ -66,7 +66,7 @@ ordereddict==1.1
 pandas==0.24.1
 pendulum==1.4.4
 psutil==5.5.1
-psycopg2==2.7.7           # via apache-airflow
+psycopg2-binary==2.7.7
 pycparser==2.19           # via cffi
 pygments==2.3.1
 python-daemon==2.1.2
