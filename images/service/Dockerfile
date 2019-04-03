@@ -21,8 +21,8 @@ COPY deps/requirements.txt ./
 RUN set -ex \
     && pip install --no-cache-dir -r requirements.txt
 
-COPY dist/airflow_docker-0.1.5-py2.py3-none-any.whl .
-RUN pip install airflow_docker-0.1.5-py2.py3-none-any.whl
+COPY dist/airflow_docker-0.2.0-py2.py3-none-any.whl .
+RUN pip install airflow_docker-0.2.0-py2.py3-none-any.whl
 
 # Set Up defaults for running the container
 USER airflow
