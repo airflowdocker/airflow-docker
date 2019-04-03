@@ -18,3 +18,9 @@
 def test_import():
     import airflow_docker
     import airflow_docker.operator
+
+
+def test_construct():
+    import airflow_docker.operator
+
+    airflow_docker.operator.Operator(image="image", task_id="foo")

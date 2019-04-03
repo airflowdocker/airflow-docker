@@ -1,2 +1,2 @@
 apache-airflow[docker]==1.10.2
-airflow-docker-helper
+airflow-docker-helper>=0.2.0

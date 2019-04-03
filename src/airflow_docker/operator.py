@@ -331,6 +331,11 @@ class BaseDockerOperator(object):
             if result["StatusCode"] != 0:
                 raise AirflowException("docker container failed: " + repr(result))
 
+            # Move the in-container xcom-pushes into airflow.
+            result = self.host_client.get_xcom_push_data(host_tmp_dir)
+            for row in result:
+                self.xcom_push(context, key=row["key"], value=row["value"])
+
             if self.xcom_push_flag:
                 return (
                     self.cli.logs(container=self.container["Id"])
