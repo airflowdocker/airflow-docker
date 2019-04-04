@@ -37,11 +37,9 @@
 import ast
 import json
 
-import six
-from docker import APIClient, tls
-
 import airflow.configuration as conf
 import airflow_docker_helper
+import six
 from airflow.exceptions import AirflowConfigException, AirflowException
 from airflow.hooks.docker_hook import DockerHook
 from airflow.models import BaseOperator, SkipMixin
@@ -49,6 +47,7 @@ from airflow.sensors.base_sensor_operator import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.utils.file import TemporaryDirectory
 from airflow_docker.conf import get_boolean_default, get_default
+from docker import APIClient, tls
 
 DEFAULT_HOST_TEMPORARY_DIRECTORY = "/tmp/airflow"
 
