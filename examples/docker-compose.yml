@@ -41,6 +41,7 @@ services:
     environment:
       - C_FORCE_ROOT=1
       - AIRFLOW__WORKER__HOST_TEMPORARY_DIRECTORY=${HOST_TEMPORARY_DIRECTORY:-/tmp/airflow}
+      - AIRFLOW__AIRFLOWDOCKER__FORCE_PULL=false
 
   flower:
     image: airflowdocker/service
