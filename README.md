@@ -99,3 +99,18 @@ from airflow_docker_helper import client
 context = client.context()
 
 ```
+
+## Configuration
+
+The following operator defaults can be set under the `airflowdocker` namespace:
+
+* force_pull (boolean true/false)
+* auto_remove (boolean true/false)
+* network_mode
+
+For example, to set `force_pull` to False by default set the following environment variable like so:
+
+```bash
+export AIRFLOW__AIRFLOWDOCKER__FORCE_PULL=false
+
+```
