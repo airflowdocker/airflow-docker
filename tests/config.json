@@ -1,0 +1,7 @@
+{
+    "test": {
+        "test-run": {
+        "image": "path/to/image"
+        }
+    }
+}
