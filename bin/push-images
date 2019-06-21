@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-AIRFLOW_DOCKER_VERSION=0.2.1
+AIRFLOW_DOCKER_VERSION=0.2.2
 
 docker push airflowdocker/service:$AIRFLOW_DOCKER_VERSION
 docker push airflowdocker/service
