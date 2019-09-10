@@ -9,8 +9,17 @@ def get_boolean_default(key, default):
         return default
 
 
-def get_default(key, default):
+def get_default(key, default=None):
     try:
         return conf.get("airflowdocker", key)
     except AirflowConfigException:
         return default
+
+
+def get_default_list(key, default=None):
+    default = default if default is not None else []
+
+    result = get_default(key)
+    if result is None:
+        return default
+    return result.split("\n")

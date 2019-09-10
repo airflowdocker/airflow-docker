@@ -1,30 +1,27 @@
+import functools
 import json
 import os
 
+from airflow import configuration
 from airflow.models import Variable
 
 
-def get_config(env=None, config_path="/airflow/dags", config_file="config.json"):
+@functools.lru_cache()
+def get_config(path=None, file="config.json"):
     """Load the config for the current airflow environment.
-
-    The only assumption about the structure of the file is that, if `env` is provided,
-    there exists top-level keys containing the name(s) of the different environments.
-
-    Example:
-        {
-            "dev": {
-                "image": "<image-location>"
-            },
-            "prod": {
-                "image": "<image-location>"
-            }
-        }
     """
-    with open(os.path.join(config_path, config_file), "r") as f:
-        config = json.load(f)
+    if path is None:
+        path = configuration.get("core", "dags_folder")
 
-    if env is not None:
-        return config[env]
+    path = os.path.join(path, file)
+    if os.path.exists(path):
+        with open(path, "rb") as f:
+            config = json.load(f)
+    else:
+        config = {}
+
+    config.setdefault("airflow-docker", {})
+
     return config
 
 

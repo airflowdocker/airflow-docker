@@ -38,7 +38,6 @@ setup(
         'Intended Audience :: Developers',
         'Intended Audience :: System Administrators',
         'License :: OSI Approved :: Apache Software License',
-        'Programming Language :: Python :: 2.7',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
@@ -47,7 +46,7 @@ setup(
     packages=find_packages('src'),
     package_dir={'': 'src'},
     zip_safe=False,
-    python_requires='>=2.7,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*',
+    python_requires='>=3,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*',
     install_requires=parse_requirements('deps/requirements.in'),
     extras_require={
         'testing': parse_requirements('deps/testing-requirements.in'),

@@ -47,6 +47,7 @@ from airflow.sensors.base_sensor_operator import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
 from airflow.utils.file import TemporaryDirectory
 from airflow_docker.conf import get_boolean_default, get_default
+from airflow_docker.ext import delegate_to_extensions, register_extensions
 from docker import APIClient, tls
 
 DEFAULT_HOST_TEMPORARY_DIRECTORY = "/tmp/airflow"
@@ -189,6 +190,10 @@ class BaseDockerOperator(object):
     :type shm_size: int
     :param provide_context: If True, make a serialized form of the context available.
     :type provide_context: bool
+
+    :param environment_preset: The name of the environment-preset to pull from the config.
+        If omitted defaults to the "default" key, see `EnvironmentPresetExtension`.
+    :type environment_preset: string
     """
 
     template_fields = ("command", "environment")
@@ -227,7 +232,6 @@ class BaseDockerOperator(object):
         *args,
         **kwargs
     ):
-
         super(BaseDockerOperator, self).__init__(*args, **kwargs)
         self.api_version = api_version
         self.auto_remove = auto_remove
@@ -256,6 +260,8 @@ class BaseDockerOperator(object):
         self.docker_conn_id = docker_conn_id
         self.shm_size = shm_size
         self.provide_context = provide_context
+
+        self.extra_kwargs = kwargs
 
         self.cli = None
         self.container = None
@@ -344,7 +350,6 @@ class BaseDockerOperator(object):
                     else str(line)
                 )
 
-            # Implementation opportunity for meta operators
             return self.do_meta_operation(context, host_tmp_dir)
 
     def get_command(self):
@@ -376,7 +381,7 @@ class BaseDockerOperator(object):
         pass
 
     def prepare_environment(self, context, host_tmp_dir):
-        pass
+        delegate_to_extensions(self, "post_prepare_environment", context, host_tmp_dir)
 
     def prepare_host_tmp_dir(self, context, host_tmp_dir):
         self.host_client.make_meta_dir(host_tmp_dir)
@@ -422,3 +427,6 @@ class ShortCircuitOperator(ShortCircuitMixin, Operator):
 class BranchOperator(BranchMixin, Operator):
     def do_meta_operation(self, context, host_tmp_dir):
         return self.host_client.branch_task_ids(host_tmp_dir)
+
+
+register_extensions(BaseDockerOperator)

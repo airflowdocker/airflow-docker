@@ -15,22 +15,6 @@ setup-env: &setup-env
 
 jobs:
 
-  python-2.7-test:
-    docker:
-      - image: python:2.7.15
-    environment:
-      - TOXENV=py27
-    steps:
-      - checkout
-      - <<: *setup-env
-      - attach_workspace:
-          at: tmp
-      - <<: *test-tox-env
-      - persist_to_workspace:
-          root: tmp
-          paths:
-            - .coverage.py27
-
   python-3.5-test:
     docker:
       - image: python:3.5.5
@@ -146,13 +130,11 @@ workflows:
   version: 2
   test:
     jobs:
-      - python-2.7-test
       - python-3.5-test
       - python-3.6-test
       - python-3.7-test
       - coverage:
           requires:
-            - python-2.7-test
             - python-3.5-test
             - python-3.6-test
             - python-3.7-test
