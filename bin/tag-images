@@ -4,3 +4,4 @@ AIRFLOW_DOCKER_VERSION=0.2.2
 
 docker tag airflowdocker/service airflowdocker/service:$AIRFLOW_DOCKER_VERSION
 docker tag airflowdocker/example-tasks airflowdocker/example-tasks:$AIRFLOW_DOCKER_VERSION
+docker tag airflowdocker/tester airflowdocker/tester:$AIRFLOW_DOCKER_VERSION
