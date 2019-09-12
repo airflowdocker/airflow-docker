@@ -22,4 +22,4 @@ def get_default_list(key, default=None):
     result = get_default(key)
     if result is None:
         return default
-    return result.split("\n")
+    return [line.strip() for line in result.split("\n") if line.strip()]

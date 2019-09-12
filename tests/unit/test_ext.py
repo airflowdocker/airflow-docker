@@ -72,7 +72,7 @@ class Test_load_extensions:
         with patch_config(
             """
             [airflowdocker]
-            extensions_paths =
+            extension_paths =
             """
         ):
             result = load_extensions()
@@ -82,7 +82,7 @@ class Test_load_extensions:
         with patch_config(
             """
             [airflowdocker]
-            extensions_paths = airflow_docker.ext.environment_preset
+            extension_paths = airflow_docker.ext.environment_preset
             """
         ):
             with pytest.raises(ValueError) as e:
@@ -94,7 +94,7 @@ class Test_load_extensions:
         with patch_config(
             """
             [airflowdocker]
-            extensions_paths = airflow_docker.ext.environment_preset:EnvironmentPresetExtension
+            extension_paths = airflow_docker.ext.environment_preset:EnvironmentPresetExtension
             """
         ):
             result = load_extensions()
@@ -104,7 +104,7 @@ class Test_load_extensions:
         with patch_config(
             """
             [airflowdocker]
-            extensions_paths =
+            extension_paths =
               airflow_docker.ext.environment_preset:EnvironmentPresetExtension
               tests.unit.test_ext:FakeExtension
             """
