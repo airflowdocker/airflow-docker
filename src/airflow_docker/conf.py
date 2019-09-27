@@ -1,8 +1,7 @@
-import airflow.configuration as conf
-from airflow.exceptions import AirflowConfigException
-
-
 def get_boolean_default(key, default):
+    from airflow.exceptions import AirflowConfigException
+    import airflow.configuration as conf
+
     try:
         return conf.getboolean("airflowdocker", key)
     except AirflowConfigException:
@@ -10,6 +9,9 @@ def get_boolean_default(key, default):
 
 
 def get_default(key, default=None):
+    from airflow.exceptions import AirflowConfigException
+    import airflow.configuration as conf
+
     try:
         return conf.get("airflowdocker", key)
     except AirflowConfigException:

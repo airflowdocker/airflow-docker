@@ -50,7 +50,7 @@ def patch_config(config):
     parser = AirflowConfigParser()
     parser.read_string(textwrap.dedent(config))
 
-    with patch("airflow_docker.conf.conf.get", new=parser.get):
+    with patch("airflow.configuration.get", new=parser.get):
         yield
 
 

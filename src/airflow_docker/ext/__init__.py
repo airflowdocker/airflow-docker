@@ -1,7 +1,6 @@
 import functools
 import importlib
 
-import airflow
 from airflow_docker import conf
 from airflow_docker.utils import get_config
 
