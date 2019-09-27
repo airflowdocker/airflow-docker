@@ -15,9 +15,11 @@
 # limitations under the License.
 __version__ = "0.3.0"
 
+import airflow
 from airflow_docker.operator import (
     BranchOperator,
     Operator,
     Sensor,
     ShortCircuitOperator,
 )
+from airflow_docker.plugin import AirflowDockerPlugin
