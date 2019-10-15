@@ -15,3 +15,5 @@ class AirflowDockerPlugin(AirflowPlugin):
     sensors = [Sensor]
     admin_views = [config.view]
     flask_blueprints = [config.blueprint]
+
+    appbuilder_views = [config.appbuilder_package]

@@ -118,7 +118,7 @@ jobs:
       - attach_workspace:
           at: tmp
       - run:
-          command: cp -r tmp/dist dist
+          command: cp -r tmp/dist .
       - run:
           command: ./bin/build-images
       - run:
