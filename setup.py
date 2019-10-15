@@ -59,4 +59,6 @@ setup(
             "airflow_docker = airflow_docker.plugin:AirflowDockerPlugin"
         ]
     },
+    package_data={'airflow-docker': ['src/airflow_docker/views/templates/*.html']},
+    include_package_data=True,
 )

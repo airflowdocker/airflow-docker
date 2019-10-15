@@ -48,6 +48,7 @@ from airflow.utils.decorators import apply_defaults
 from airflow.utils.file import TemporaryDirectory
 from airflow_docker.conf import get_boolean_default, get_default
 from airflow_docker.ext import delegate_to_extensions, register_extensions
+from airflow_docker.utils import get_config
 from docker import APIClient, tls
 
 DEFAULT_HOST_TEMPORARY_DIRECTORY = "/tmp/airflow"
@@ -404,6 +405,10 @@ class BaseDockerOperator(object):
     @property
     def host_client(self):
         return self._host_client or airflow_docker_helper.host
+
+    @staticmethod
+    def get_config():
+        return get_config()
 
 
 class Operator(BaseDockerOperator, BaseOperator):

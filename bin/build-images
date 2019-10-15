@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-cp -r dist images/service/dist
+cp -r dist images/service
 
 docker build -t airflowdocker/service images/service
-docker build -t airflowdocker/example-tasks images/example-tasks
-docker build -t airflowdocker/tester images/tester
+# docker build -t airflowdocker/example-tasks images/example-tasks
+# docker build -t airflowdocker/tester images/tester

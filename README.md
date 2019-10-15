@@ -37,7 +37,7 @@ client.sensor(True)
 
 ## Branch Operator
 
-Dag Task 
+Dag Task
 
 ```python
 from airflow_docker.operator import BranchOperator
@@ -58,7 +58,7 @@ client.branch_to_tasks(['task1', 'task2'])
 
 ## Short Circuit Operator
 
-Dag Task 
+Dag Task
 
 ```python
 from airflow_docker.operator import ShortCircuitOperator
@@ -79,7 +79,7 @@ client.short_circuit()  # This task will short circuit if this function gets cal
 
 ## Context Usage
 
-Dag Task 
+Dag Task
 
 ```python
 from airflow_docker.operator import Operator
@@ -97,7 +97,6 @@ Task Code
 from airflow_docker_helper import client
 
 context = client.context()
-
 ```
 
 ## Configuration
@@ -112,5 +111,17 @@ For example, to set `force_pull` to False by default set the following environme
 
 ```bash
 export AIRFLOW__AIRFLOWDOCKER__FORCE_PULL=false
+```
 
+# Plugin
+This package works as an airflow plugin as well. When installed and running airflow,
+dags can import like so
+```python
+from airflow.{type, like "operators", "sensors"}.{name specificed inside the plugin class} import *
+```
+
+i.e.
+
+```python
+from airflow.operators.airflow_docker import Operator
 ```
