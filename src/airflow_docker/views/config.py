@@ -29,7 +29,9 @@ class AppBuilderConfigView(AppBuilderBaseView):
     @expose("/")
     def list(self):
         rendered_config = render_config(self)
-        return self.render_template("config.html", data=rendered_config, appbuilder=True)
+        return self.render_template(
+            "config.html", data=rendered_config, appbuilder=True
+        )
 
 
 view = ConfigView(category="Airflow Docker", name="Config")
