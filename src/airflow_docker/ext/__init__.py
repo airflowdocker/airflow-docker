@@ -38,3 +38,4 @@ def register_extensions(cls):
         return
 
     cls._extensions = load_extensions()
+    return cls

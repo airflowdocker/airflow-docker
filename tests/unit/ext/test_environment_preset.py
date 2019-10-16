@@ -4,6 +4,7 @@ from airflow_docker.ext.environment_preset import (
     calculate_task_name,
     classify_docker_image,
     collect_environment_preset,
+    EnvironmentPresetExtension,
 )
 
 
@@ -91,3 +92,17 @@ class Test_collect_environment_preset:
                 None, self.Operator(), None, {"env": "ENV"}
             )
         assert result == {}
+
+
+class TestEnvironmentPresetExtension_post_prepare_environment:
+    def setup(self):
+        class Operator:
+            task_id = "food"
+            extra_kwargs = {}
+
+        self.operator = Operator()
+
+    def test_no_default_no_op(self):
+        EnvironmentPresetExtension().post_prepare_environment(
+            self.operator, {}, context={}, host_tmp_dir=""
+        )
