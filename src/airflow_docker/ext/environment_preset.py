@@ -82,7 +82,7 @@ class EnvironmentPresetExtension:
         environment_presets = config.get(cls.config_key, {cls.default_preset: {}})
 
         environment_preset = operator.extra_kwargs.get(
-            "environment_preset", cls.config_key
+            "environment_preset", cls.default_preset
         )
         if environment_preset in environment_presets:
             write_environment_preset(
