@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
 from airflow_docker.ext.environment_preset import (
     calculate_task_name,
@@ -99,10 +99,66 @@ class TestEnvironmentPresetExtension_post_prepare_environment:
         class Operator:
             task_id = "food"
             extra_kwargs = {}
+            log = MagicMock()
+            environment = {}
 
         self.operator = Operator()
 
+    def test_no_config_no_op(self):
+        with patch(
+            "airflow_docker.ext.environment_preset.collect_variable_values",
+            return_value={},
+        ):
+            EnvironmentPresetExtension().post_prepare_environment(
+                self.operator, config={}, context={}, host_tmp_dir=""
+            )
+
+        assert self.operator.environment == {}
+
     def test_no_default_no_op(self):
-        EnvironmentPresetExtension().post_prepare_environment(
-            self.operator, {}, context={}, host_tmp_dir=""
-        )
+        with patch(
+            "airflow_docker.ext.environment_preset.collect_variable_values",
+            return_value={},
+        ):
+            EnvironmentPresetExtension().post_prepare_environment(
+                self.operator,
+                config={"environment-presets": {}},
+                context={},
+                host_tmp_dir="",
+            )
+
+        assert self.operator.environment == {}
+
+    def test_default_config(self):
+        with patch(
+            "airflow_docker.ext.environment_preset.collect_variable_values",
+            return_value={"env": "dev"},
+        ):
+            EnvironmentPresetExtension().post_prepare_environment(
+                self.operator,
+                config={"environment-presets": {"default": {"env": "ENV"}}},
+                context={},
+                host_tmp_dir="",
+            )
+
+        assert self.operator.environment == {"ENV": "dev"}
+
+    def test_non_default_config(self):
+        with patch(
+            "airflow_docker.ext.environment_preset.collect_variable_values",
+            return_value={"env": "dev", "foo": "bar"},
+        ):
+            self.operator.extra_kwargs["environment_preset"] = "foo"
+            EnvironmentPresetExtension().post_prepare_environment(
+                self.operator,
+                config={
+                    "environment-presets": {
+                        "default": {"env": "ENV"},
+                        "foo": {"foo": "ENV"},
+                    }
+                },
+                context={},
+                host_tmp_dir="",
+            )
+
+        assert self.operator.environment == {"ENV": "bar"}
