@@ -106,6 +106,7 @@ class BranchMixin(SkipMixin):
         self.log.info("Done.")
 
 
+@register_extensions
 class BaseDockerOperator(object):
     """
     Execute a command inside a docker container.
@@ -432,6 +433,3 @@ class ShortCircuitOperator(ShortCircuitMixin, Operator):
 class BranchOperator(BranchMixin, Operator):
     def do_meta_operation(self, context, host_tmp_dir):
         return self.host_client.branch_task_ids(host_tmp_dir)
-
-
-register_extensions(BaseDockerOperator)

@@ -74,8 +74,8 @@ class EnvironmentPresetExtension:
     config_key = "environment-presets"
     default_preset = "default"
 
-    @provide_session
     @classmethod
+    @provide_session
     def post_prepare_environment(
         cls, operator, config, context, host_tmp_dir, session=None
     ):
