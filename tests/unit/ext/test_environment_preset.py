@@ -118,7 +118,7 @@ class Test_collect_environment_preset:
             result = collect_environment_preset(
                 session, self.Operator(), None, {"env": "ENV_VAR", "bar": "BAR_VAR"}
             )
-        assert variable.key.in_.call_args[0][0] == ("env", "bar")
+        assert sorted(variable.key.in_.call_args[0][0]) == ["bar", "env"]
         assert result == {"ENV_VAR": "ENV", "BAR_VAR": "BAR"}
 
 
