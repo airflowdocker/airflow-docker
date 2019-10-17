@@ -31,7 +31,7 @@ def classify_docker_image(image):
 
 
 def collect_environment_preset(session, operator, context, keys):
-    variables = collect_variable_values(session, keys.keys())
+    variables = collect_variable_values(session, *keys.keys())
 
     supported_environment_collectors = {
         "task_name": lambda: calculate_task_name(operator, context),
