@@ -93,6 +93,34 @@ class Test_collect_environment_preset:
             )
         assert result == {}
 
+    def test_variables_sent_correctly(self):
+        class Item:
+            def __init__(self, key, val):
+                self.key = key
+                self.val = val
+
+        class Session:
+            def query(self, mock):
+                return self
+
+            def filter(self, mock):
+                self.mock = mock
+                return self
+
+            def __iter__(self):
+                for env in variable.key.in_.call_args[0][0]:
+                    yield Item(env, env.upper())
+
+        session = Session()
+        with patch(
+            "airflow_docker.ext.environment_preset.Variable", new=MagicMock()
+        ) as variable:
+            result = collect_environment_preset(
+                session, self.Operator(), None, {"env": "ENV_VAR", "bar": "BAR_VAR"}
+            )
+        assert variable.key.in_.call_args[0][0] == ("env", "bar")
+        assert result == {"ENV_VAR": "ENV", "BAR_VAR": "BAR"}
+
 
 class TestEnvironmentPresetExtension_post_prepare_environment:
     def setup(self):
