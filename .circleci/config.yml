@@ -92,6 +92,20 @@ jobs:
             pip install tox
             tox -e lint
 
+  prepare-release:
+    docker:
+      - image: circleci/python:3.7.2
+    steps:
+      - checkout
+      - run:
+          command: |
+            python -m venv .venv
+            source .venv/bin/activate
+            pip install releasely
+            git config --global user.email "huntcsg@gmail.com"
+            git config --global user.name "airflow-docker-bot"
+            releasely prepare-release
+
   pypi:
     docker:
       - image: python:3.6.5
@@ -139,7 +153,7 @@ workflows:
             - python-3.6-test
             - python-3.7-test
       - lint
-      - pypi:
+      - prepare-release:
           requires:
             - lint
             - coverage
@@ -147,6 +161,15 @@ workflows:
             branches:
               only:
                 - /^master$/
+                - /^release-v[0-9]+$/
+      - pypi:
+          requires:
+            - lint
+            - coverage
+          filters:
+            branches:
+              only:
+                - /^release-v[0-9]+\.[0-9]+$/
 
       - docker:
           requires:
@@ -156,4 +179,4 @@ workflows:
           filters:
             branches:
               only:
-                - /^master$/
+                - /^release-v[0-9]+\.[0-9]+$/
