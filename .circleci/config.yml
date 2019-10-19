@@ -15,22 +15,6 @@ setup-env: &setup-env
 
 jobs:
 
-  python-3.5-test:
-    docker:
-      - image: python:3.5.5
-    environment:
-      - TOXENV=py35
-    steps:
-      - checkout
-      - <<: *setup-env
-      - attach_workspace:
-          at: tmp
-      - <<: *test-tox-env
-      - persist_to_workspace:
-          root: tmp
-          paths:
-            - .coverage.py35
-
   python-3.6-test:
     docker:
       - image: python:3.6.5
@@ -144,12 +128,10 @@ workflows:
   version: 2
   test:
     jobs:
-      - python-3.5-test
       - python-3.6-test
       - python-3.7-test
       - coverage:
           requires:
-            - python-3.5-test
             - python-3.6-test
             - python-3.7-test
       - lint

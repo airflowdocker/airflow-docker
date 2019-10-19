@@ -1,4 +1,10 @@
-apache-airflow[crypto,celery,docker,password,redis,s3]==1.10.2
+apache-airflow[crypto,celery,docker,password,redis,s3]==1.10.5
 airflow-docker-helper>=0.2.0
-redis<3.0.0
 psycopg2-binary
+
+# Added due to strange kombu version incompatibility.
+# Taken from https://github.com/apache/airflow/blob/1.10.5/setup.py#L158
+celery~=4.3
+flower>=0.7.3, <1.0
+tornado>=4.2.0, <6.0
+kombu==4.6.3

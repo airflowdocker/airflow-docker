@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -ex
+
 # Library Deps
 export SLUGIFY_USES_TEXT_UNIDECODE=${SLUGIFY_USES_TEXT_UNIDECODE:-yes}
 pip-compile -o deps/requirements.txt --upgrade-package airflow-docker-helper deps/requirements.in
@@ -13,4 +15,4 @@ pip-compile -o images/service/deps/requirements.txt images/service/deps/requirem
 
 
 # XXX: Remove this when https://github.com/apache/airflow/pull/6140 is merged
-echo $"`sed 's/apache-airflow\[celery,crypto,docker,password,redis,s3\]==1.10.2/apache-airflow\[celery,crypto,docker,google_auth,password,redis,s3\]==1.10.2/g' images/service/deps/requirements.txt`" > images/service/deps/requirements.txt
+echo $"`sed 's/apache-airflow\[celery,crypto,docker,password,redis,s3\]==1.10.5/apache-airflow\[celery,crypto,docker,google_auth,password,redis,s3\]==1.10.5/g' images/service/deps/requirements.txt`" > images/service/deps/requirements.txt
