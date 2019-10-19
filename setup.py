@@ -53,6 +53,7 @@ setup(
         "testing": parse_requirements("deps/testing-requirements.in"),
         "docs": parse_requirements("deps/docs-requirements.in"),
         "linting": parse_requirements("deps/linting-requirements.in"),
+        "dev": parse_requirements("deps/dev-requirements.in"),
     },
     entry_points={
         "airflow.plugins": [
