@@ -1,0 +1,13 @@
+{
+  "airflow-docker": {
+    "environment-presets": {
+      "default": {
+        "task_name": "task_name",
+        "dagrun_id": "dagrun_id",
+        "docker_image": "docker_image",
+        "docker_image_name": "docker_image_name",
+        "docker_image_tag": "docker_image_tag"
+      }
+    }
+  }
+}
