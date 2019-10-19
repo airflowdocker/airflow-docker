@@ -1,0 +1,3 @@
+[tool.releasely.filepaths]
+release_spec ="release.rst"
+changelog = "docs/changes.rst"
