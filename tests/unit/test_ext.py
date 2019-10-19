@@ -14,6 +14,7 @@ import pytest
 
 
 class FakeExtension:
+    kwargs = {"fake"}
     pass
 
 
@@ -51,7 +52,8 @@ def patch_config(config):
     parser.read_string(textwrap.dedent(config))
 
     with patch("airflow.configuration.get", new=parser.get):
-        yield
+        with patch("airflow.configuration.has_option", new=parser.has_option):
+            yield
 
 
 class Test_load_extensions:
@@ -121,7 +123,7 @@ class Test_register_extensions:
         class Bar:
             pass
 
-        with patch("airflow_docker.ext.load_extensions", Mock()) as m:
+        with patch("airflow_docker.ext.load_extensions", Mock(return_value=[])) as m:
             register_extensions(Foo)
             register_extensions(Bar)
 
@@ -131,8 +133,26 @@ class Test_register_extensions:
         class Foo:
             pass
 
-        with patch("airflow_docker.ext.load_extensions", Mock()) as m:
+        with patch("airflow_docker.ext.load_extensions", Mock(return_value=[])) as m:
             register_extensions(Foo)
             register_extensions(Foo)
 
         assert m.called_once()
+
+    def test_known_extra_kwargs_updated(self):
+        class Foo:
+            known_extra_kwargs = set()
+            pass
+
+        class Bar:
+            known_extra_kwargs = set()
+            pass
+
+        with patch(
+            "airflow_docker.ext.load_extensions", Mock(return_value=[FakeExtension])
+        ):
+            register_extensions(Foo)
+            register_extensions(Bar)
+
+            assert "fake" in Foo.known_extra_kwargs
+            assert "fake" in Bar.known_extra_kwargs
