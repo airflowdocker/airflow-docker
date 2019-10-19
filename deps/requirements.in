@@ -1,2 +1,3 @@
 apache-airflow[docker]==1.10.5
 airflow-docker-helper>=0.2.0
+boto3>=1.7.0,<1.8.0
