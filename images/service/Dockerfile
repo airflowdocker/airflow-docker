@@ -27,7 +27,7 @@ RUN pip install airflow_docker-0.4.6-py2.py3-none-any.whl
 # Set Up defaults for running the container
 USER airflow
 WORKDIR /airflow
-COPY airflow.cfg ./
+COPY airflow.cfg webserver_config.py ./
 # Ports for the webserver, flower, and the worker log server
 EXPOSE 8080 5555 8793
 ENTRYPOINT ["airflow"]
