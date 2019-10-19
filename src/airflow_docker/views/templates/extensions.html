@@ -1,0 +1,23 @@
+{% if appbuilder %}
+    {% extends 'appbuilder/baselayout.html' %}
+{% else %}
+    {% extends 'admin/master.html' %}
+    {% import 'admin/lib.html' as lib with context %}
+    {% import 'admin/static.html' as admin_static with context%}
+    {% import 'admin/model/layout.html' as model_layout with context %}
+
+    {% block head %}
+        {{ super() }}
+        {{ lib.form_css() }}
+    {% endblock %}
+{% endif %}
+
+{% block body %}
+    {{ super() }}
+    <h4>Enabled Extensions</h4>
+    {% for extension in data %}
+    <h5>{{ extension.name }}</h5>
+    <pre>{{ extension.doc }}</pre>
+    {% endfor %}
+
+{% endblock %}

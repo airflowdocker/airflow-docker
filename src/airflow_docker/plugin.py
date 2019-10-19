@@ -5,7 +5,7 @@ from airflow_docker.operator import (
     Sensor,
     ShortCircuitOperator,
 )
-from airflow_docker.views import config
+from airflow_docker.views import config, extensions
 
 
 class AirflowDockerPlugin(AirflowPlugin):
@@ -13,7 +13,7 @@ class AirflowDockerPlugin(AirflowPlugin):
 
     operators = [BranchOperator, Operator, ShortCircuitOperator]
     sensors = [Sensor]
-    admin_views = [config.view]
-    flask_blueprints = [config.blueprint]
+    admin_views = [config.view, extensions.view]
+    flask_blueprints = [config.blueprint, extensions.blueprint]
 
-    appbuilder_views = [config.appbuilder_package]
+    appbuilder_views = [config.appbuilder_package, extensions.appbuilder_package]
