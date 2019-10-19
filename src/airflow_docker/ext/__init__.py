@@ -38,4 +38,8 @@ def register_extensions(cls):
         return
 
     cls._extensions = load_extensions()
+
+    for extension in cls._extensions:
+        cls.known_extra_kwargs.update(getattr(extension, "kwargs", set()))
+
     return cls

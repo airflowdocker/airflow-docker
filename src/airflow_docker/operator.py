@@ -198,8 +198,9 @@ class BaseDockerOperator(object):
     :type environment_preset: string
     """
 
-    template_fields = ("command", "environment")
+    template_fields = ("command", "environment", "extra_kwargs")
     template_ext = (".sh", ".bash")
+    known_extra_kwargs = set()
 
     @apply_defaults
     def __init__(
@@ -234,6 +235,14 @@ class BaseDockerOperator(object):
         *args,
         **kwargs
     ):
+        self.extra_kwargs = {
+            known_key: kwargs.pop(known_key)
+            for known_key in self.known_extra_kwargs
+            # This conditional is critical since we can not know
+            # here what a "default" value should look like.
+            if known_key in kwargs
+        }
+
         super(BaseDockerOperator, self).__init__(*args, **kwargs)
         self.api_version = api_version
         self.auto_remove = auto_remove
@@ -262,8 +271,6 @@ class BaseDockerOperator(object):
         self.docker_conn_id = docker_conn_id
         self.shm_size = shm_size
         self.provide_context = provide_context
-
-        self.extra_kwargs = kwargs
 
         self.cli = None
         self.container = None

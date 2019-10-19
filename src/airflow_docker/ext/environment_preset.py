@@ -71,6 +71,7 @@ def write_environment_preset(session, operator, context, environment_preset):
 
 
 class EnvironmentPresetExtension:
+    kwargs = {"environment_preset"}
     config_key = "environment-presets"
     default_preset = "default"
 
