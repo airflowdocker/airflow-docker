@@ -10,3 +10,7 @@ pip-compile -o deps/linting-requirements.txt deps/requirements.txt deps/testing-
 
 # Service Image Deps
 pip-compile -o images/service/deps/requirements.txt images/service/deps/requirements.in deps/requirements.txt
+
+
+# XXX: Remove this when https://github.com/apache/airflow/pull/6140 is merged
+echo $"`sed 's/apache-airflow\[celery,crypto,docker,password,redis,s3\]==1.10.2/apache-airflow\[celery,crypto,docker,google_auth,password,redis,s3\]==1.10.2/g' images/service/deps/requirements.txt`" > images/service/deps/requirements.txt
