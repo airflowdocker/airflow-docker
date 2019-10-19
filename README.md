@@ -1,5 +1,5 @@
 # airflow-docker
-[![CircleCI](https://circleci.com/gh/huntcsg/airflow-docker.svg?style=svg)](https://circleci.com/gh/huntcsg/airflow-docker) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fd30a7ce26094c2b9f2e4d80d671a3d0)](https://www.codacy.com/app/fool.of.god/airflow-docker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=huntcsg/airflow-docker&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/huntcsg/airflow-docker/branch/master/graph/badge.svg)](https://codecov.io/gh/huntcsg/airflow-docker)
+[![CircleCI](https://circleci.com/gh/airflowdocker/airflow-docker.svg?style=svg)](https://circleci.com/gh/airflowdocker/airflow-docker) [![Codacy Badge](https://api.codacy.com/project/badge/Grade/fd30a7ce26094c2b9f2e4d80d671a3d0)](https://www.codacy.com/app/fool.of.god/airflow-docker?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=huntcsg/airflow-docker&amp;utm_campaign=Badge_Grade) [![codecov](https://codecov.io/gh/airflowdocker/airflow-docker/branch/master/graph/badge.svg)](https://codecov.io/gh/airflowdocker/airflow-docker)
 
 ## Description
 An opinionated implementation of exclusively using airflow DockerOperators for all Operators.
