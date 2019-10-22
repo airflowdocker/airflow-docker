@@ -1,3 +1,15 @@
+.. _v1.1.1:
+
+-------------------
+v1.1.1 - 2019-10-22
+-------------------
+
+* Added airflow-queue-stats to project. This provides a json endpoint to get queue and worker information.
+
+Authors:
+
+* Hunter Senft-Grupp
+
 .. _v1.1.0:
 
 -------------------
