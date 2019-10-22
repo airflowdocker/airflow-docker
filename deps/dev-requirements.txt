@@ -5,15 +5,19 @@
 #    pip-compile --output-file=deps/dev-requirements.txt deps/dev-requirements.in deps/requirements.txt
 #
 airflow-docker-helper==0.2.0
+airflow-queue-stats==0.1.2
 alembic==1.2.1
+amqp==2.5.2
 apache-airflow[docker]==1.10.5
 apispec[yaml]==3.0.0
 attrs==19.3.0
 babel==2.7.0
+billiard==3.6.1.0
 boto3==1.7.84
 botocore==1.10.84
 bumpversion==0.5.3        # via releasely
 cached-property==1.5.1
+celery==4.3.0
 certifi==2019.9.11
 chardet==3.0.4
 click==7.0
@@ -38,6 +42,7 @@ flask-sqlalchemy==2.4.1
 flask-swagger==0.2.13
 flask-wtf==0.14.2
 flask==1.1.1
+flower==0.9.3
 funcsigs==1.0.0
 future==0.16.0
 gunicorn==19.9.0
@@ -49,6 +54,7 @@ jinja2==2.10.3
 jmespath==0.9.4
 json-merge-patch==0.2
 jsonschema==3.1.1
+kombu==4.6.3
 lazy-object-proxy==1.4.2
 lockfile==0.12.2
 mako==1.1.0
@@ -85,9 +91,11 @@ tenacity==4.12.0
 termcolor==1.1.0
 text-unidecode==1.2
 thrift==0.11.0
+tornado==5.1.1
 tzlocal==1.5.1
 unicodecsv==0.14.1
 urllib3==1.25.6
+vine==1.3.0
 websocket-client==0.56.0
 werkzeug==0.16.0
 wtforms==2.2.1
