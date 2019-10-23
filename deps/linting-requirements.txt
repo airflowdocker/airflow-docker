@@ -5,7 +5,7 @@
 #    pip-compile --output-file=deps/linting-requirements.txt deps/docs-requirements.txt deps/linting-requirements.in deps/requirements.txt deps/testing-requirements.txt
 #
 airflow-docker-helper==0.2.0
-airflow-queue-stats==0.1.2
+airflow-queue-stats==0.1.4
 alabaster==0.7.12
 alembic==1.2.1
 amqp==2.5.2

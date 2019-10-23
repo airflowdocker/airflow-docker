@@ -5,7 +5,7 @@
 #    pip-compile --output-file=deps/dev-requirements.txt deps/dev-requirements.in deps/requirements.txt
 #
 airflow-docker-helper==0.2.0
-airflow-queue-stats==0.1.2
+airflow-queue-stats==0.1.4
 alembic==1.2.1
 amqp==2.5.2
 apache-airflow[docker]==1.10.5

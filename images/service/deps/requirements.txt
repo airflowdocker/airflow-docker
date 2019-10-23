@@ -5,7 +5,7 @@
 #    pip-compile --output-file=images/service/deps/requirements.txt deps/requirements.txt images/service/deps/requirements.in
 #
 airflow-docker-helper==0.2.0
-airflow-queue-stats==0.1.2
+airflow-queue-stats==0.1.4
 alembic==1.2.1
 amqp==2.5.2
 apache-airflow[celery,crypto,docker,google_auth,password,redis,s3]==1.10.5
