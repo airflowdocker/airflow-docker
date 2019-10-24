@@ -1,3 +1,15 @@
+.. _v1.1.2:
+
+-------------------
+v1.1.2 - 2019-10-24
+-------------------
+
+* Update airflow-queue-stats plugin to fix a bug in the backlog task count implementation.
+
+Authors:
+
+* Hunter Senft-Grupp
+
 .. _v1.1.1:
 
 -------------------
