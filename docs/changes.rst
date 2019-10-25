@@ -1,3 +1,15 @@
+.. _v1.1.3:
+
+-------------------
+v1.1.3 - 2019-10-25
+-------------------
+
+* Ensure dag tester test failures print out the reason why they failed.
+
+Authors:
+
+* Dan Cardin
+
 .. _v1.1.2:
 
 -------------------
