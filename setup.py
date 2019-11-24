@@ -49,9 +49,6 @@ setup(
     python_requires=">=3,!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,!=3.5.*",
     install_requires=parse_requirements("deps/requirements.in"),
     extras_require={
-        "testing": parse_requirements("deps/testing-requirements.in"),
-        "docs": parse_requirements("deps/docs-requirements.in"),
-        "linting": parse_requirements("deps/linting-requirements.in"),
         "dev": parse_requirements("deps/dev-requirements.in"),
     },
     entry_points={

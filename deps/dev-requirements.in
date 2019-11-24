@@ -1,1 +1,10 @@
 releasely
+sphinx
+sphinx_rtd_theme
+isort
+black
+flake8
+pytest
+pytest-cov
+mock; python_version < '3'
+

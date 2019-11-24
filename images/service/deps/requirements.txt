@@ -108,4 +108,4 @@ zipp==0.6.0
 zope.deprecation==4.4.0
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.4.0        # via jsonschema, python-daemon, zope.deprecation
+# setuptools==42.0.0        # via jsonschema, python-daemon, zope.deprecation

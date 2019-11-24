@@ -1,11 +1,12 @@
 import json
 
 from airflow.plugins_manager import AirflowPlugin
-from airflow_docker.operator import BaseDockerOperator
-from airflow_docker.views import template_folder
 from flask import Blueprint
 from flask_admin import BaseView, expose
 from flask_appbuilder import BaseView as AppBuilderBaseView
+
+from airflow_docker.operator import BaseDockerOperator
+from airflow_docker.views import template_folder
 
 
 def render_extensions(self):

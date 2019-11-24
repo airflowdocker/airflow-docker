@@ -35,23 +35,36 @@
 # specific language governing permissions and limitations
 # under the License.
 import ast
+import io
 import json
+import os
 
-import airflow.configuration as conf
-import airflow_docker_helper
 import six
-from airflow.exceptions import AirflowConfigException, AirflowException
+from airflow.exceptions import AirflowException
 from airflow.hooks.docker_hook import DockerHook
 from airflow.models import BaseOperator, SkipMixin
 from airflow.sensors.base_sensor_operator import BaseSensorOperator
 from airflow.utils.decorators import apply_defaults
-from airflow.utils.file import TemporaryDirectory
-from airflow_docker.conf import get_boolean_default, get_default
-from airflow_docker.ext import delegate_to_extensions, register_extensions
-from airflow_docker.utils import get_config
 from docker import APIClient, tls
 
-DEFAULT_HOST_TEMPORARY_DIRECTORY = "/tmp/airflow"
+from airflow_docker.conf import get_boolean_default, get_default
+from airflow_docker.constants import (
+    BRANCH_OPERATOR_FILENAME,
+    CONTAINER_RUN_DIR,
+    CONTEXT_FILENAME,
+    META_PATH_DIR,
+    RESULT_FILENAME,
+    SENSOR_OPERATOR_FILENAME,
+    SHORT_CIRCUIT_OPERATOR_FILENAME,
+    XCOM_PUSH_FILENAME,
+)
+from airflow_docker.context import serialize_context
+from airflow_docker.ext import delegate_to_extensions, register_extensions
+from airflow_docker.utils import (
+    get_config,
+    make_tar_data_stream,
+    process_tar_data_stream,
+)
 
 
 class ShortCircuitMixin(SkipMixin):
@@ -110,12 +123,6 @@ class BranchMixin(SkipMixin):
 class BaseDockerOperator(object):
     """
     Execute a command inside a docker container.
-
-    A temporary directory is created on the host and
-    mounted into a container to allow storing files
-    that together exceed the default disk size of 10GB in a container.
-    The path to the mounted directory can be accessed
-    via the environment variable ``AIRFLOW_TMP_DIR``.
 
     If a login to a private registry is required prior to pulling the image, a
     Docker connection needs to be configured in Airflow and the connection ID
@@ -272,9 +279,11 @@ class BaseDockerOperator(object):
         self.shm_size = shm_size
         self.provide_context = provide_context
 
+        self.container_data = {}
+        """A mapping of filenames to file data in bytes."""
+
         self.cli = None
         self.container = None
-        self._host_client = None  # Shim for attaching a test client
 
     def get_hook(self):
         return DockerHook(
@@ -303,63 +312,73 @@ class BaseDockerOperator(object):
                 if "status" in output:
                     self.log.info("%s", output["status"])
 
-        with TemporaryDirectory(
-            prefix="airflowtmp", dir=self.host_tmp_base_dir
-        ) as host_tmp_dir:
-            self.environment["AIRFLOW_TMP_DIR"] = self.tmp_dir
-            additional_volumes = ["{0}:{1}".format(host_tmp_dir, self.tmp_dir)]
+        self.environment["AIRFLOW_TMP_DIR"] = self.tmp_dir
+        additional_volumes = [
+            os.path.join(self.tmp_dir, META_PATH_DIR),
+            CONTAINER_RUN_DIR,
+        ]
 
-            # Hook for creating mounted meta directories
-            self.prepare_host_tmp_dir(context, host_tmp_dir)
-            self.prepare_environment(context, host_tmp_dir)
+        self.prepare_environment(context)
 
-            if self.provide_context:
-                self.write_context(context, host_tmp_dir)
+        if self.provide_context:
+            self.container_data[CONTEXT_FILENAME] = json.dumps(
+                serialize_context(context)
+            ).encode("utf-8")
 
-            self.container = self.cli.create_container(
-                command=self.get_command(),
-                entrypoint=self.entrypoint,
-                environment=self.environment,
-                host_config=self.cli.create_host_config(
-                    auto_remove=self.auto_remove,
-                    binds=self.volumes + additional_volumes,
-                    network_mode=self.network_mode,
-                    shm_size=self.shm_size,
-                    dns=self.dns,
-                    dns_search=self.dns_search,
-                    cpu_shares=int(round(self.cpus * 1024)),
-                    mem_limit=self.mem_limit,
-                ),
-                image=self.image,
-                user=self.user,
-                working_dir=self.working_dir,
+        self.container = self.cli.create_container(
+            command=self.get_command(),
+            entrypoint=self.entrypoint,
+            environment=self.environment,
+            host_config=self.cli.create_host_config(
+                auto_remove=False,  # The operator implementation will be responsible for removing the container
+                binds=self.volumes + additional_volumes,
+                network_mode=self.network_mode,
+                shm_size=self.shm_size,
+                dns=self.dns,
+                dns_search=self.dns_search,
+                cpu_shares=int(round(self.cpus * 1024)),
+                mem_limit=self.mem_limit,
+            ),
+            image=self.image,
+            user=self.user,
+            working_dir=self.working_dir,
+        )
+
+        self.log.info("Container created: %s", self.container["Id"])
+
+        self.put_container_data(root=CONTAINER_RUN_DIR, spec=self.container_data)
+
+        self.put_container_data(
+            root=os.path.join(self.tmp_dir, META_PATH_DIR), spec=self.container_data
+        )
+
+        self.cli.start(self.container["Id"])
+
+        line = ""
+        for line in self.cli.logs(container=self.container["Id"], stream=True):
+            line = line.strip()
+            if hasattr(line, "decode"):
+                line = line.decode("utf-8")
+            self.log.info(line)
+
+        result = self.cli.wait(self.container["Id"])
+        if result["StatusCode"] != 0:
+            raise AirflowException("docker container failed: " + repr(result))
+
+        self.gather_container_data(path=os.path.join(self.tmp_dir, META_PATH_DIR))
+        self.gather_container_data(path=CONTAINER_RUN_DIR)
+
+        for row in self.get_xcom_data():
+            self.xcom_push(context, key=row["key"], value=row["value"])
+
+        if self.xcom_push_flag:
+            return (
+                self.cli.logs(container=self.container["Id"])
+                if self.xcom_all
+                else str(line)
             )
-            self.cli.start(self.container["Id"])
 
-            line = ""
-            for line in self.cli.logs(container=self.container["Id"], stream=True):
-                line = line.strip()
-                if hasattr(line, "decode"):
-                    line = line.decode("utf-8")
-                self.log.info(line)
-
-            result = self.cli.wait(self.container["Id"])
-            if result["StatusCode"] != 0:
-                raise AirflowException("docker container failed: " + repr(result))
-
-            # Move the in-container xcom-pushes into airflow.
-            result = self.host_client.get_xcom_push_data(host_tmp_dir)
-            for row in result:
-                self.xcom_push(context, key=row["key"], value=row["value"])
-
-            if self.xcom_push_flag:
-                return (
-                    self.cli.logs(container=self.container["Id"])
-                    if self.xcom_all
-                    else str(line)
-                )
-
-            return self.do_meta_operation(context, host_tmp_dir)
+        return self.do_meta_operation(context)
 
     def get_command(self):
         if self.command is not None and self.command.strip().find("[") == 0:
@@ -372,6 +391,11 @@ class BaseDockerOperator(object):
         if self.cli is not None:
             self.log.info("Stopping docker container")
             self.cli.stop(self.container["Id"])
+            self.maybe_remove()
+
+    def maybe_remove(self):
+        if self.cli is not None and self.auto_remove:
+            self.cli.remove_container(self.container["Id"], v=True)
 
     def __get_tls_config(self):
         tls_config = None
@@ -386,37 +410,43 @@ class BaseDockerOperator(object):
             self.docker_url = self.docker_url.replace("tcp://", "https://")
         return tls_config
 
-    def do_meta_operation(self, context, host_tmp_dir):
-        pass
+    def do_meta_operation(self, context):
+        return _maybe_decode_keys(
+            data=self.container_data, keys=[RESULT_FILENAME], default=None
+        )
 
-    def prepare_environment(self, context, host_tmp_dir):
-        delegate_to_extensions(self, "post_prepare_environment", context, host_tmp_dir)
-
-    def prepare_host_tmp_dir(self, context, host_tmp_dir):
-        self.host_client.make_meta_dir(host_tmp_dir)
-        host_meta_dir = airflow_docker_helper.get_host_meta_path(host_tmp_dir)
-        self.log.info("Making host meta dir: {}".format(host_meta_dir))
-
-    def write_context(self, context, host_tmp_dir):
-        self.host_client.write_context(context, host_tmp_dir)
-
-    @property
-    def host_tmp_base_dir(self):
-        try:
-            return conf.get("worker", "host_temporary_directory")
-        except AirflowConfigException:
-            return DEFAULT_HOST_TEMPORARY_DIRECTORY
-
-    def host_meta_dir(self, context, host_tmp_dir):
-        return airflow_docker_helper.get_host_meta_path(host_tmp_dir)
-
-    @property
-    def host_client(self):
-        return self._host_client or airflow_docker_helper.host
+    def prepare_environment(self, context):
+        delegate_to_extensions(self, "post_prepare_environment", context, None)
 
     @staticmethod
     def get_config():
         return get_config()
+
+    def put_container_data(self, root, spec):
+        tar_stream = make_tar_data_stream(tar_spec=spec)
+
+        return self.cli.put_archive(
+            container=self.container["Id"], path=root, data=tar_stream,
+        )
+
+    def gather_container_data(self, path):
+        data_stream, info = self.cli.get_archive(
+            container=self.container["Id"], path=path,
+        )
+        data = process_tar_data_stream(data_stream, path)
+        self.container_data.update(data)
+
+    def get_xcom_data(self):
+        if XCOM_PUSH_FILENAME not in self.container_data:
+            return []
+
+        result = self.container_data[XCOM_PUSH_FILENAME]
+        result = [
+            json.loads(row.decode("utf-8").strip())
+            for row in result.split(b"\n")
+            if row.decode("utf-8").strip()
+        ]
+        return result
 
 
 class Operator(BaseDockerOperator, BaseOperator):
@@ -426,17 +456,45 @@ class Operator(BaseDockerOperator, BaseOperator):
 
 class Sensor(BaseDockerOperator, BaseSensorOperator):
     def poke(self, context):
+        # In mode=poke, this operator will hold state in between each run.
+        # We should clear out the sensor result before running.
+        self.reset_sensor()
         return self._execute(context)
 
-    def do_meta_operation(self, context, host_tmp_dir):
-        return self.host_client.sensor_outcome(host_tmp_dir)
+    def reset_sensor(self):
+        for key in [RESULT_FILENAME, SENSOR_OPERATOR_FILENAME]:
+            if key in self.container_data:
+                del self.container_data[key]
+
+    def do_meta_operation(self, context):
+        return _maybe_decode_keys(
+            data=self.container_data,
+            keys=[RESULT_FILENAME, SENSOR_OPERATOR_FILENAME],
+            default=False,
+        )
 
 
 class ShortCircuitOperator(ShortCircuitMixin, Operator):
-    def do_meta_operation(self, context, host_tmp_dir):
-        return self.host_client.short_circuit_outcome(host_tmp_dir)
+    def do_meta_operation(self, context):
+        return _maybe_decode_keys(
+            data=self.container_data,
+            keys=[RESULT_FILENAME, SHORT_CIRCUIT_OPERATOR_FILENAME],
+            default=True,
+        )
 
 
 class BranchOperator(BranchMixin, Operator):
-    def do_meta_operation(self, context, host_tmp_dir):
-        return self.host_client.branch_task_ids(host_tmp_dir)
+    def do_meta_operation(self, context):
+        return _maybe_decode_keys(
+            data=self.container_data,
+            keys=[RESULT_FILENAME, BRANCH_OPERATOR_FILENAME],
+            default=[],
+        )
+
+
+def _maybe_decode_keys(data, keys, default=None):
+    for key in keys:
+        if key in data:
+            return json.loads(data[key].decode('utf-8'))
+    else:
+        return default

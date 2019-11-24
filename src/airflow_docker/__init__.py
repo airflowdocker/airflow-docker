@@ -16,6 +16,7 @@
 __version__ = "1.1.3"
 
 import airflow
+
 from airflow_docker.operator import (
     BranchOperator,
     Operator,

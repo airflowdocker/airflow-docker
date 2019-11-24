@@ -1,4 +1,5 @@
 from airflow.plugins_manager import AirflowPlugin
+
 from airflow_docker.operator import (
     BranchOperator,
     Operator,

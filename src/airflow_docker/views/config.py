@@ -1,13 +1,14 @@
 import json
 
 from airflow.plugins_manager import AirflowPlugin
-from airflow_docker.utils import get_config
-from airflow_docker.views import template_folder
 from flask import Blueprint
 from flask_admin import BaseView, expose
 from flask_appbuilder import BaseView as AppBuilderBaseView
 from pygments import highlight, lexers
 from pygments.formatters import HtmlFormatter
+
+from airflow_docker.utils import get_config
+from airflow_docker.views import template_folder
 
 
 def render_config(self):
