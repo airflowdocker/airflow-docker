@@ -3,9 +3,12 @@ import textwrap
 
 import boto3
 
+from airflow_docker.constants import CONTAINER_RUN_DIR
+
 MAX_ROLE_DURATION_SECONDS = 60 * 60 * 12  # 12 hours in seconds
 MAX_ROLE_SESSION_NAME_LENGTH = 64
 ROLE_SESSION_NAME_TEMPLATE = "{dag_run_id}__{task_instance_try}__{task_id}"
+AWS_CREDENTIALS_FILENAME = "aws-credentials"
 
 credential_key_map = {
     "aws_access_key_id": "AccessKeyId",
@@ -65,13 +68,6 @@ def get_credentials(context, role_arn, role_session_duration=MAX_ROLE_DURATION_S
         role_session_duration=role_session_duration,
     )
     return raw_credentials
-
-
-def write_credentials(credentials, credentials_path):
-    credentials_file_contents = aws_credentials_file_format(**credentials)
-    os.makedirs(os.path.dirname(credentials_path), exist_ok=True)
-    with open(credentials_path, "wb") as f:
-        f.write(credentials_file_contents.encode("utf-8"))
 
 
 def find_role_session_duration(role_arn):
@@ -134,9 +130,8 @@ class AWSRoleAssumptionExtension:
 
             operator.log.info("Assuming role: {}".format(role_arn))
 
-            host_credentials_path = os.path.join(host_tmp_dir, ".aws", "credentials")
             container_credentials_path = os.path.join(
-                operator.tmp_dir, ".aws", "credentials"
+                CONTAINER_RUN_DIR, AWS_CREDENTIALS_FILENAME
             )
 
             raw_credentials = get_credentials(
@@ -146,9 +141,10 @@ class AWSRoleAssumptionExtension:
             )
             log_credentials(operator, raw_credentials)
             credentials = format_credentials_data(raw_credentials)
-            write_credentials(
-                credentials=credentials, credentials_path=host_credentials_path
-            )
+            credentials_file_contents = aws_credentials_file_format(**credentials)
+            operator.container_data[
+                AWS_CREDENTIALS_FILENAME
+            ] = credentials_file_contents.encode("utf-8")
 
             operator.environment[
                 "AWS_SHARED_CREDENTIALS_FILE"
