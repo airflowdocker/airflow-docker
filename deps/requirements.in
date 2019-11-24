@@ -1,4 +1,11 @@
-apache-airflow[docker]==1.10.5
+apache-airflow[celery,docker]==1.10.5
 airflow-docker-helper>=0.2.0
 airflow-queue-stats==0.1.4
 boto3>=1.7.0,<1.8.0
+
+# Added due to strange kombu version incompatibility.
+# Taken from https://github.com/apache/airflow/blob/1.10.5/setup.py#L158
+celery~=4.3
+flower>=0.7.3, <1.0
+tornado>=4.2.0, <6.0
+kombu==4.6.3

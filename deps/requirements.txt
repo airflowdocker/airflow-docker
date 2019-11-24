@@ -8,7 +8,7 @@ airflow-docker-helper==0.2.0
 airflow-queue-stats==0.1.4
 alembic==1.2.1            # via apache-airflow
 amqp==2.5.2               # via kombu
-apache-airflow[docker]==1.10.5
+apache-airflow[celery,docker]==1.10.5
 apispec[yaml]==3.0.0      # via flask-appbuilder
 attrs==19.3.0             # via jsonschema
 babel==2.7.0              # via flask-babel, flower
@@ -16,7 +16,7 @@ billiard==3.6.1.0         # via celery
 boto3==1.7.84
 botocore==1.10.84         # via boto3, s3transfer
 cached-property==1.5.1    # via apache-airflow
-celery==4.3.0             # via apache-airflow, flower
+celery==4.3.0
 certifi==2019.9.11        # via requests
 chardet==3.0.4            # via requests
 click==7.0                # via flask, flask-appbuilder
@@ -41,7 +41,7 @@ flask-sqlalchemy==2.4.1   # via flask-appbuilder
 flask-swagger==0.2.13     # via apache-airflow
 flask-wtf==0.14.2         # via apache-airflow, flask-appbuilder
 flask==1.1.1              # via apache-airflow, flask-admin, flask-appbuilder, flask-babel, flask-caching, flask-jwt-extended, flask-login, flask-openid, flask-sqlalchemy, flask-swagger, flask-wtf
-flower==0.9.3             # via apache-airflow
+flower==0.9.3
 funcsigs==1.0.0           # via apache-airflow
 future==0.16.0            # via apache-airflow
 gunicorn==19.9.0          # via apache-airflow
@@ -53,7 +53,7 @@ jinja2==2.10.3            # via apache-airflow, flask, flask-babel
 jmespath==0.9.4           # via boto3, botocore
 json-merge-patch==0.2     # via apache-airflow
 jsonschema==3.1.1         # via flask-appbuilder
-kombu==4.6.3              # via apache-airflow, celery
+kombu==4.6.3
 lazy-object-proxy==1.4.2  # via apache-airflow
 lockfile==0.12.2          # via python-daemon
 mako==1.1.0               # via alembic
@@ -89,7 +89,7 @@ tenacity==4.12.0          # via apache-airflow
 termcolor==1.1.0          # via apache-airflow
 text-unidecode==1.2       # via apache-airflow
 thrift==0.11.0            # via apache-airflow
-tornado==5.1.1            # via apache-airflow, flower
+tornado==5.1.1
 tzlocal==1.5.1            # via apache-airflow, pendulum
 unicodecsv==0.14.1        # via apache-airflow
 urllib3==1.25.6           # via requests
@@ -101,4 +101,4 @@ zipp==0.6.0               # via importlib-metadata
 zope.deprecation==4.4.0   # via apache-airflow
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==41.4.0        # via jsonschema, python-daemon, zope.deprecation
+# setuptools==42.0.0        # via jsonschema, python-daemon, zope.deprecation

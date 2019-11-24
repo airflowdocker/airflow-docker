@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 #
-#     Copyright 2019 Hunter Senft-Grupp
+#     Copyright 2019 Contributing Authors
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
@@ -16,6 +16,7 @@
 __version__ = "1.1.3"
 
 import airflow
+
 from airflow_docker.operator import (
     BranchOperator,
     Operator,

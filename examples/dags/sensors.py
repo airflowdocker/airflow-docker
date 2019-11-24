@@ -73,7 +73,7 @@ with dag:
         soft_fail=False,
         timeout=30,
         command=json.dumps([
-            "python", "sensor.py", "FAIL",
+            "sensor.py", "FAIL",
         ]),
     )
 
@@ -92,7 +92,7 @@ with dag:
         soft_fail=True,
         timeout=30,
         command=json.dumps([
-            "python", "sensor.py", "FAIL",
+            "sensor.py", "FAIL",
         ]),
     )
 
