@@ -1,4 +1,4 @@
-FROM python:3.6.6-alpine
+FROM python:3.6.12-alpine
 
 RUN pip install airflow-docker-helper
 
