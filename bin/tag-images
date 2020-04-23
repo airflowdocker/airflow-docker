@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-AIRFLOW_DOCKER_VERSION=1.1.3
+AIRFLOW_DOCKER_VERSION=1.1.4
 
 docker tag airflowdocker/service airflowdocker/service:$AIRFLOW_DOCKER_VERSION
 docker tag airflowdocker/example-tasks airflowdocker/example-tasks:$AIRFLOW_DOCKER_VERSION
