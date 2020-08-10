@@ -192,6 +192,9 @@ class BaseDockerOperator(object):
     :type shm_size: int
     :param provide_context: If True, make a serialized form of the context available.
     :type provide_context: bool
+    :param additional_create_host_config_kwargs: optional dictionary of kwargs passed
+        to create_host_config
+    :type additional_create_host_config_kwargs: dict
 
     :param environment_preset: The name of the environment-preset to pull from the config.
         If omitted defaults to the "default" key, see `EnvironmentPresetExtension`.
@@ -232,6 +235,7 @@ class BaseDockerOperator(object):
         auto_remove=get_boolean_default("auto_remove", True),
         shm_size=None,
         provide_context=False,
+        additional_create_host_config_kwargs=None,
         *args,
         **kwargs
     ):
@@ -271,6 +275,9 @@ class BaseDockerOperator(object):
         self.docker_conn_id = docker_conn_id
         self.shm_size = shm_size
         self.provide_context = provide_context
+        self.additional_create_host_config_kwargs = (
+            additional_create_host_config_kwargs or {}
+        )
 
         self.cli = None
         self.container = None
@@ -298,8 +305,8 @@ class BaseDockerOperator(object):
 
         if self.force_pull or len(self.cli.images(name=self.image)) == 0:
             self.log.info("Pulling docker image %s", self.image)
-            for l in self.cli.pull(self.image, stream=True):
-                output = json.loads(l.decode("utf-8").strip())
+            for line in self.cli.pull(self.image, stream=True):
+                output = json.loads(line.decode("utf-8").strip())
                 if "status" in output:
                     self.log.info("%s", output["status"])
 
@@ -329,6 +336,7 @@ class BaseDockerOperator(object):
                     dns_search=self.dns_search,
                     cpu_shares=int(round(self.cpus * 1024)),
                     mem_limit=self.mem_limit,
+                    **self.additional_create_host_config_kwargs,
                 ),
                 image=self.image,
                 user=self.user,
