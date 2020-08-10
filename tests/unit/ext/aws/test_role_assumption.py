@@ -4,9 +4,8 @@ from unittest import mock
 
 import airflow_docker.ext.aws.role_assumption
 import airflow_docker.operator
-from airflow.models import DAG, DagRun, TaskInstance
-
 import pytest
+from airflow.models import DAG, DagRun, TaskInstance
 
 HERE = os.path.dirname(__file__)
 

@@ -2,6 +2,7 @@ import contextlib
 import textwrap
 from unittest.mock import Mock, patch
 
+import pytest
 from airflow.configuration import AirflowConfigParser
 from airflow_docker.ext import (
     delegate_to_extensions,
@@ -9,8 +10,6 @@ from airflow_docker.ext import (
     load_extensions,
     register_extensions,
 )
-
-import pytest
 
 
 class FakeExtension:
