@@ -17,7 +17,7 @@ jobs:
 
   python-3.6-test:
     docker:
-      - image: python:3.6.5
+      - image: python:3.6.11
     environment:
       - TOXENV=py36
     steps:
@@ -33,7 +33,7 @@ jobs:
 
   python-3.7-test:
     docker:
-      - image: python:3.7.0
+      - image: python:3.7.8
     environment:
       - TOXENV=py37
     steps:
@@ -47,9 +47,25 @@ jobs:
           paths:
             - .coverage.py37
 
+  python-3.8-test:
+    docker:
+      - image: python:3.8.5
+    environment:
+      - TOXENV=py38
+    steps:
+      - checkout
+      - <<: *setup-env
+      - attach_workspace:
+          at: tmp
+      - <<: *test-tox-env
+      - persist_to_workspace:
+          root: tmp
+          paths:
+            - .coverage.py38
+
   coverage:
     docker:
-      - image: python:3.6.5
+      - image: python:3.6.11
     steps:
       - checkout
       - <<: *setup-env
@@ -68,7 +84,7 @@ jobs:
 
   lint:
     docker:
-      - image: python:3.6.5
+      - image: python:3.6.11
     steps:
       - checkout
       - run:
@@ -78,7 +94,7 @@ jobs:
 
   prepare-release:
     docker:
-      - image: circleci/python:3.7.2
+      - image: circleci/python:3.7.8
     steps:
       - checkout
       - run:
@@ -92,7 +108,7 @@ jobs:
 
   pypi:
     docker:
-      - image: python:3.6.5
+      - image: python:3.6.11
     steps:
       - checkout
       - <<: *setup-env
@@ -130,6 +146,7 @@ workflows:
     jobs:
       - python-3.6-test
       - python-3.7-test
+      - python-3.8-test
       - coverage:
           requires:
             - python-3.6-test
