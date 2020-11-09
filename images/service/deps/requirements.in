@@ -1,6 +1,6 @@
-apache-airflow[crypto,celery,docker,password,redis,s3]==1.10.7
+apache-airflow[crypto,celery,docker,password,redis,s3]==1.10.9
 airflow-docker-helper>=0.2.0
-boto3>=1.7.0,<1.8.0
+boto3
 psycopg2-binary
 
 # Added due to strange kombu version incompatibility.

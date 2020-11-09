@@ -4,141 +4,134 @@
 #
 #    pip-compile --output-file=deps/linting-requirements.txt deps/docs-requirements.txt deps/linting-requirements.in deps/requirements.txt deps/testing-requirements.txt
 #
-airflow-docker-helper==0.2.0
-airflow-queue-stats==0.1.4
-alabaster==0.7.12
-alembic==1.4.3
-amqp==2.6.1
-apache-airflow[docker]==1.10.7
-apispec[yaml]==1.3.3
+airflow-docker-helper==0.2.0  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt
+airflow-queue-stats==0.1.4  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt
+alabaster==0.7.12         # via -r deps/docs-requirements.txt, sphinx
+alembic==1.4.3            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+apache-airflow[celery,docker]==1.10.9  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, airflow-queue-stats
+apispec[yaml]==1.3.3      # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
 appdirs==1.4.4            # via black
-argcomplete==1.12.0
-attrs==19.3.0
-babel==2.8.0
-billiard==3.6.3.0
-black==20.8b1
-boto3==1.7.84
-botocore==1.10.84
-cached-property==1.5.1
-cattrs==0.9.2
-celery==4.4.7
-certifi==2020.6.20
-chardet==3.0.4
-click==7.1.2
-colorama==0.4.3
-colorlog==4.0.2
-configparser==3.5.3
-coverage==5.3
-croniter==0.3.34
-defusedxml==0.6.0
-dill==0.3.2
-dnspython==2.0.0
-docker-pycreds==0.4.0
-docker==3.7.3
-docutils==0.16
-email-validator==1.1.1
-flake8==3.8.3
-flask-admin==1.5.4
-flask-appbuilder==2.3.4
-flask-babel==1.0.0
-flask-caching==1.3.3
-flask-jwt-extended==3.24.1
-flask-login==0.4.1
-flask-openid==1.2.5
-flask-sqlalchemy==2.4.4
-flask-swagger==0.2.13
-flask-wtf==0.14.3
-flask==1.1.2
-flower==0.9.5
-funcsigs==1.0.2
-future==0.16.0
-graphviz==0.14.1
-gunicorn==19.10.0
-humanize==2.6.0
-idna==2.10
-imagesize==1.2.0
-importlib-metadata==1.7.0
-iniconfig==1.0.1
-iso8601==0.1.13
-isort==5.5.2
-itsdangerous==1.1.0
-jinja2==2.10.3
-jmespath==0.10.0
-json-merge-patch==0.2
-jsonschema==3.2.0
-kombu==4.6.11
-lazy-object-proxy==1.5.1
-lockfile==0.12.2
-mako==1.1.3
-markdown==2.6.11
-markupsafe==1.1.1
-marshmallow-enum==1.5.1
-marshmallow-sqlalchemy==0.23.1
-marshmallow==2.21.0
+argcomplete==1.12.0       # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+attrs==19.3.0             # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, cattrs, jsonschema, pytest
+babel==2.8.0              # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-babel, sphinx
+black==20.8b1             # via -r deps/linting-requirements.in
+boto3==1.16.17            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt
+botocore==1.19.17         # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, boto3, s3transfer
+cached-property==1.5.1    # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+cattrs==0.9.2             # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+certifi==2020.6.20        # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, requests
+chardet==3.0.4            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, requests
+click==7.1.2              # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, black, flask, flask-appbuilder
+colorama==0.4.3           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+colorlog==4.0.2           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+configparser==3.5.3       # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+coverage==5.3             # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, pytest-cov
+croniter==0.3.34          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+dataclasses==0.7          # via black
+defusedxml==0.6.0         # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, python3-openid
+dill==0.3.2               # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+dnspython==2.0.0          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, email-validator
+docker-pycreds==0.4.0     # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, docker
+docker==3.7.3             # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+docutils==0.16            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, python-daemon, sphinx
+email-validator==1.1.1    # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+flake8==3.8.3             # via -r deps/linting-requirements.in
+flask-admin==1.5.4        # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+flask-appbuilder==2.3.4   # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+flask-babel==1.0.0        # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+flask-caching==1.3.3      # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+flask-jwt-extended==3.24.1  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+flask-login==0.4.1        # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, flask-appbuilder
+flask-openid==1.2.5       # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+flask-sqlalchemy==2.4.4   # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+flask-swagger==0.2.13     # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+flask-wtf==0.14.3         # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, flask-appbuilder
+flask==1.1.2              # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, flask-admin, flask-appbuilder, flask-babel, flask-caching, flask-jwt-extended, flask-login, flask-openid, flask-sqlalchemy, flask-swagger, flask-wtf
+funcsigs==1.0.2           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+future==0.16.0            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+graphviz==0.14.1          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+gunicorn==19.10.0         # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+idna==2.10                # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, email-validator, requests
+imagesize==1.2.0          # via -r deps/docs-requirements.txt, sphinx
+importlib-metadata==1.7.0  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, argcomplete, flake8, jsonschema, pluggy, pytest
+iniconfig==1.0.1          # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, pytest
+iso8601==0.1.13           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+isort==5.5.2              # via -r deps/linting-requirements.in
+itsdangerous==1.1.0       # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask, flask-wtf
+jinja2==2.10.3            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, flask, flask-babel, sphinx
+jmespath==0.10.0          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, boto3, botocore
+json-merge-patch==0.2     # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+jsonschema==3.2.0         # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, flask-appbuilder
+lazy-object-proxy==1.5.1  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+lockfile==0.12.2          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, python-daemon
+mako==1.1.3               # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, alembic
+markdown==2.6.11          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+markupsafe==1.1.1         # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, jinja2, mako, wtforms
+marshmallow-enum==1.5.1   # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+marshmallow-sqlalchemy==0.23.1  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+marshmallow==2.21.0       # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder, marshmallow-enum, marshmallow-sqlalchemy
 mccabe==0.6.1             # via flake8
-more-itertools==8.5.0
+more-itertools==8.5.0     # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, pytest
 mypy-extensions==0.4.3    # via black
-natsort==7.0.1
-numpy==1.19.2
-packaging==20.4
-pandas==0.25.3
+natsort==7.0.1            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, croniter
+numpy==1.19.2             # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, pandas
+packaging==20.4           # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, pytest, sphinx
+pandas==0.25.3            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
 pathspec==0.8.0           # via black
-pendulum==1.4.4
-pluggy==0.13.1
-prison==0.1.3
-prometheus-client==0.8.0
-psutil==5.7.2
-py==1.9.0
+pendulum==1.4.4           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+pluggy==0.13.1            # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, pytest
+prison==0.1.3             # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+psutil==5.7.2             # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+py==1.9.0                 # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, pytest
 pycodestyle==2.6.0        # via flake8
 pyflakes==2.2.0           # via flake8
-pygments==2.7.0
-pyjwt==1.7.1
-pyparsing==2.4.7
-pyrsistent==0.17.3
-pytest-cov==2.10.1
-pytest==6.0.2
-python-daemon==2.1.2
-python-dateutil==2.8.1
-python-editor==1.0.4
-python3-openid==3.2.0
-pytz==2020.1
-pytzdata==2020.1
-pyyaml==5.3.1
+pygments==2.7.0           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, sphinx
+pyjwt==1.7.1              # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder, flask-jwt-extended
+pyparsing==2.4.7          # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, packaging
+pyrsistent==0.17.3        # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, jsonschema
+pytest-cov==2.10.1        # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt
+pytest==6.0.2             # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, pytest-cov
+python-daemon==2.1.2      # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+python-dateutil==2.8.1    # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, alembic, apache-airflow, botocore, croniter, flask-appbuilder, pandas, pendulum
+python-editor==1.0.4      # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, alembic
+python3-openid==3.2.0     # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-openid
+pytz==2020.1              # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, babel, flask-babel, pandas, tzlocal
+pytzdata==2020.1          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, pendulum
+pyyaml==5.3.1             # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apispec, flask-swagger
 regex==2020.7.14          # via black
-requests==2.24.0
-s3transfer==0.1.13
-setproctitle==1.1.10
-six==1.15.0
-snowballstemmer==2.0.0
-sphinx-rtd-theme==0.5.0
-sphinx==3.2.1
-sphinxcontrib-applehelp==1.0.2
-sphinxcontrib-devhelp==1.0.2
-sphinxcontrib-htmlhelp==1.0.3
-sphinxcontrib-jsmath==1.0.1
-sphinxcontrib-qthelp==1.0.3
-sphinxcontrib-serializinghtml==1.1.4
-sqlalchemy-jsonfield==0.9.0
-sqlalchemy-utils==0.36.8
-sqlalchemy==1.3.19
-tabulate==0.8.7
-tenacity==4.12.0
-termcolor==1.1.0
-text-unidecode==1.2
-thrift==0.13.0
-toml==0.10.1
-tornado==5.1.1
+requests==2.24.0          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, docker, sphinx
+s3transfer==0.3.3         # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, boto3
+setproctitle==1.1.10      # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+six==1.15.0               # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, docker, docker-pycreds, flask-jwt-extended, jsonschema, packaging, prison, python-dateutil, sqlalchemy-utils, tenacity, thrift, websocket-client
+snowballstemmer==2.0.0    # via -r deps/docs-requirements.txt, sphinx
+sphinx-rtd-theme==0.5.0   # via -r deps/docs-requirements.txt
+sphinx==3.2.1             # via -r deps/docs-requirements.txt, sphinx-rtd-theme
+sphinxcontrib-applehelp==1.0.2  # via -r deps/docs-requirements.txt, sphinx
+sphinxcontrib-devhelp==1.0.2  # via -r deps/docs-requirements.txt, sphinx
+sphinxcontrib-htmlhelp==1.0.3  # via -r deps/docs-requirements.txt, sphinx
+sphinxcontrib-jsmath==1.0.1  # via -r deps/docs-requirements.txt, sphinx
+sphinxcontrib-qthelp==1.0.3  # via -r deps/docs-requirements.txt, sphinx
+sphinxcontrib-serializinghtml==1.1.4  # via -r deps/docs-requirements.txt, sphinx
+sqlalchemy-jsonfield==0.9.0  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+sqlalchemy-utils==0.36.8  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-appbuilder
+sqlalchemy==1.3.19        # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, alembic, apache-airflow, flask-sqlalchemy, marshmallow-sqlalchemy, sqlalchemy-jsonfield, sqlalchemy-utils
+tabulate==0.8.7           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+tenacity==4.12.0          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+termcolor==1.1.0          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+text-unidecode==1.2       # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+thrift==0.13.0            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+toml==0.10.1              # via -r deps/docs-requirements.txt, -r deps/testing-requirements.txt, black, pytest
 typed-ast==1.4.1          # via black
-typing-extensions==3.7.4.3
-tzlocal==1.5.1
-unicodecsv==0.14.1
-urllib3==1.25.10
-vine==1.3.0
-websocket-client==0.57.0
-werkzeug==1.0.1
-wtforms==2.3.3
-zipp==3.1.0
-zope.deprecation==4.4.0
+typing-extensions==3.7.4.3  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, black
+typing==3.7.4.3           # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, sqlalchemy-jsonfield
+tzlocal==1.5.1            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, pendulum
+unicodecsv==0.14.1        # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
+urllib3==1.25.10          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, botocore, requests
+websocket-client==0.57.0  # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, docker
+werkzeug==0.16.1          # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow, flask, flask-caching, flask-jwt-extended
+wtforms==2.3.3            # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, flask-admin, flask-wtf
+zipp==3.1.0               # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, importlib-metadata
+zope.deprecation==4.4.0   # via -r deps/docs-requirements.txt, -r deps/requirements.txt, -r deps/testing-requirements.txt, apache-airflow
 
 # The following packages are considered to be unsafe in a requirements file:
-# setuptools==50.3.0        # via jsonschema, python-daemon, sphinx, zope.deprecation
+# setuptools
