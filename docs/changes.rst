@@ -1,3 +1,16 @@
+.. _v2.0.1:
+
+-------------------
+v2.0.1 - 2020-11-13
+-------------------
+
+No code changes.
+Updated requirements. Relaxed boto3 range.
+
+Authors:
+
+* Gordon Fierce
+
 .. _v2.0.0:
 
 -------------------
