@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-isort -rc src/airflow_docker
-isort -rc tests/
+isort src/airflow_docker
+isort tests/
 black src/airflow_docker
 black tests

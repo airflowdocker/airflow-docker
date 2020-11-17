@@ -1,5 +1,5 @@
 def get_boolean_default(key, default):
-    import airflow.configuration as conf
+    from airflow.configuration import conf
 
     if conf.has_option("airflowdocker", key):
         return conf.getboolean("airflowdocker", key)
@@ -8,7 +8,7 @@ def get_boolean_default(key, default):
 
 
 def get_default(key, default=None):
-    import airflow.configuration as conf
+    from airflow.configuration import conf
 
     if conf.has_option("airflowdocker", key):
         return conf.get("airflowdocker", key)

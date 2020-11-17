@@ -50,8 +50,8 @@ def patch_config(config):
     parser = AirflowConfigParser()
     parser.read_string(textwrap.dedent(config))
 
-    with patch("airflow.configuration.get", new=parser.get):
-        with patch("airflow.configuration.has_option", new=parser.has_option):
+    with patch("airflow.configuration.conf.get", new=parser.get):
+        with patch("airflow.configuration.conf.has_option", new=parser.has_option):
             yield
 
 
