@@ -8,7 +8,7 @@ airflow-docker-helper==0.2.0  # via -r deps/requirements.txt, -r images/service/
 airflow-queue-stats==0.1.4  # via -r deps/requirements.txt
 alembic==1.4.3            # via -r deps/requirements.txt, apache-airflow
 amqp==2.6.1               # via kombu
-apache-airflow[celery,docker]==1.10.9  # via -r deps/requirements.txt, -r images/service/deps/requirements.in, airflow-queue-stats
+apache-airflow[celery,crypto,docker,password,redis,s3]==1.10.9  # via -r deps/requirements.txt, -r images/service/deps/requirements.in, airflow-queue-stats
 apispec[yaml]==1.3.3      # via -r deps/requirements.txt, flask-appbuilder
 argcomplete==1.12.0       # via -r deps/requirements.txt, apache-airflow
 attrs==19.3.0             # via -r deps/requirements.txt, apache-airflow, cattrs, jsonschema
