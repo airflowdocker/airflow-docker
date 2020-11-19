@@ -1,4 +1,5 @@
 import os
+import logging
 import subprocess
 
 import pytest
@@ -13,4 +14,9 @@ def test_all_dags_in_dag_bag(dag_bag, dag_file, dag_files):
     key = (os.path.join(DAG_PATH, dag_file),)
     if key in dag_bag.dagbag_exceptions:
         raise dag_bag.dagbag_exceptions[key]
-    assert dag_file in dag_files
+
+
+def test_no_dag_exceptions(dag_bag):
+    """Assert there are no dagbag exceptions in general.
+    """
+    assert dag_bag.dagbag_exceptions == {}

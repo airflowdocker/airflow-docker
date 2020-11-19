@@ -1,0 +1,7 @@
+[tool.pytest.ini_options]
+norecursedirs = ".* build dist *.egg"
+filterwarnings = [
+    "ignore::DeprecationWarning:future",
+    "ignore::DeprecationWarning:flask_admin",
+]
+
