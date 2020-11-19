@@ -1,3 +1,15 @@
+.. _v2.0.2:
+
+-------------------
+v2.0.2 - 2020-11-19
+-------------------
+
+Update config access to remove direct access to configuration method 'has_option', which has been deprecated.
+
+Authors:
+
+* Gordon Fierce
+
 .. _v2.0.1:
 
 -------------------
