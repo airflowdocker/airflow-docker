@@ -1,3 +1,15 @@
+.. _v2.0.3:
+
+-------------------
+v2.0.3 - 2020-11-20
+-------------------
+
+Update the tester image to allow for non-dag files.
+
+Authors:
+
+* Dan Cardin
+
 .. _v2.0.2:
 
 -------------------

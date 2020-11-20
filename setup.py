@@ -22,7 +22,7 @@ with open("README.md", "rb") as f:
 
 setup(
     name="airflow-docker",
-    version="2.0.2",
+    version="2.0.3",
     description="An opinionated implementation of exclusively "
     "using airflow DockerOperators for all Operators",
     long_description=LONG_DESCRIPTION,
