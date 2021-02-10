@@ -1,3 +1,15 @@
+.. _v2.1.0:
+
+-------------------
+v2.1.0 - 2021-02-10
+-------------------
+
+* Add configuration to the aws role assumption extension to set environment variables instead of writing a file.
+
+Authors:
+
+* Hunter Senft-Grupp
+
 .. _v2.0.3:
 
 -------------------
