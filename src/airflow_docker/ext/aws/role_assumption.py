@@ -141,7 +141,7 @@ class AWSRoleAssumptionExtension:
             )
             credentials = format_credentials_data(raw_credentials)
 
-            if operator.extra_kwargs.get('role_set_env_vars'):
+            if operator.extra_kwargs.get("role_set_env_vars"):
                 operator.environment["AWS_ACCESS_KEY_ID"] = credentials[
                     "aws_access_key_id"
                 ]
