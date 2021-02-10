@@ -134,24 +134,28 @@ class AWSRoleAssumptionExtension:
 
             operator.log.info("Assuming role: {}".format(role_arn))
 
-            host_credentials_path = os.path.join(host_tmp_dir, ".aws", "credentials")
-            container_credentials_path = os.path.join(
-                operator.tmp_dir, ".aws", "credentials"
-            )
-
             raw_credentials = get_credentials(
                 context=context,
                 role_arn=role_arn,
                 role_session_duration=role_session_duration,
             )
-            log_credentials(operator, raw_credentials)
             credentials = format_credentials_data(raw_credentials)
-            write_credentials(
-                credentials=credentials, credentials_path=host_credentials_path
-            )
 
-            operator.environment[
-                "AWS_SHARED_CREDENTIALS_FILE"
-            ] = container_credentials_path
+            if operator.extra_kwargs.get('role_set_env_vars'):
+                operator.environment["AWS_ACCESS_KEY_ID"] = credentials["aws_access_key_id"]
+                operator.environment["AWS_SECRET_ACCESS_KEY"] = credentials["aws_secret_access_key"]
+                operator.environment["AWS_SESSION_TOKEN"] = credentials["aws_session_token"]
+            else:
+                host_credentials_path = os.path.join(host_tmp_dir, ".aws", "credentials")
+                container_credentials_path = os.path.join(
+                    operator.tmp_dir, ".aws", "credentials"
+                )
+                
+                write_credentials(
+                    credentials=credentials, credentials_path=host_credentials_path
+                )
+                operator.environment["AWS_SHARED_CREDENTIALS_FILE"] = container_credentials_path
+
+            log_credentials(operator, raw_credentials)
         else:
             operator.log.info("Not assuming role")
