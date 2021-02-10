@@ -150,7 +150,7 @@ class AWSRoleAssumptionExtension:
                 container_credentials_path = os.path.join(
                     operator.tmp_dir, ".aws", "credentials"
                 )
-                
+
                 write_credentials(
                     credentials=credentials, credentials_path=host_credentials_path
                 )
