@@ -1,3 +1,15 @@
+.. _v2.1.1:
+
+-------------------
+v2.1.1 - 2021-02-11
+-------------------
+
+* Fix missing kwargs in role assumption extension to enable `role_set_env_vars`
+
+Authors:
+
+* Li Chen
+
 .. _v2.1.0:
 
 -------------------
