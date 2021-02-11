@@ -108,9 +108,10 @@ class AWSRoleAssumptionExtension:
         role_session_duration: The number of seconds to assume the role for.
             Min: 900, Max: 43200 secs
             Defaults to Max of 43200 seconds (12 hours).
+        role_set_env_vars: Use environment variables to configure AWS credentials (Default: False)
     """
 
-    kwargs = {"role_arn", "role_session_duration"}
+    kwargs = {"role_arn", "role_session_duration", "role_set_env_vars"}
 
     @classmethod
     def post_prepare_environment(
