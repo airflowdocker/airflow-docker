@@ -7,11 +7,6 @@ test-tox-env: &test-tox-env
       pip install tox
       tox
 
-setup-env: &setup-env
-  run:
-    name: Setup Environment
-    command: |
-      echo "We good".
 
 jobs:
 
@@ -22,7 +17,6 @@ jobs:
       - TOXENV=py36
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - <<: *test-tox-env
@@ -38,7 +32,6 @@ jobs:
       - TOXENV=py37
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - <<: *test-tox-env
@@ -54,7 +47,6 @@ jobs:
       - TOXENV=py38
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - <<: *test-tox-env
@@ -68,7 +60,6 @@ jobs:
       - image: python:3.6.13
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - run:
@@ -94,7 +85,7 @@ jobs:
 
   prepare-release:
     docker:
-      - image: circleci/python:3.7.10
+      - image: cimg/python:3.7.10
     steps:
       - checkout
       - run:
@@ -111,7 +102,6 @@ jobs:
       - image: python:3.6.13
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - run:

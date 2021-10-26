@@ -1,4 +1,6 @@
-apache-airflow[docker,celery]==1.10.9
+apache-airflow==1.10.9
+docker
 airflow-docker-helper>=0.2.0
 airflow-queue-stats==0.1.4
 boto3
+celery~=4.3

@@ -1,4 +1,4 @@
-FROM python:3.6.12
+FROM python:3.6.13
 
 ENV AIRFLOW_HOME=/airflow
 ENV SLUGIFY_USES_TEXT_UNIDECODE=yes
