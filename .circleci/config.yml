@@ -7,38 +7,15 @@ test-tox-env: &test-tox-env
       pip install tox
       tox
 
-setup-env: &setup-env
-  run:
-    name: Setup Environment
-    command: |
-      echo "We good".
-
 jobs:
-
-  python-3.6-test:
-    docker:
-      - image: python:3.6.13
-    environment:
-      - TOXENV=py36
-    steps:
-      - checkout
-      - <<: *setup-env
-      - attach_workspace:
-          at: tmp
-      - <<: *test-tox-env
-      - persist_to_workspace:
-          root: tmp
-          paths:
-            - .coverage.py36
 
   python-3.7-test:
     docker:
-      - image: python:3.7.10
+      - image: python:3.7.12
     environment:
       - TOXENV=py37
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - <<: *test-tox-env
@@ -54,7 +31,6 @@ jobs:
       - TOXENV=py38
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - <<: *test-tox-env
@@ -65,10 +41,9 @@ jobs:
 
   coverage:
     docker:
-      - image: python:3.6.13
+      - image: python:3.7.12
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - run:
@@ -84,7 +59,7 @@ jobs:
 
   lint:
     docker:
-      - image: python:3.6.13
+      - image: python:3.7.12
     steps:
       - checkout
       - run:
@@ -94,7 +69,7 @@ jobs:
 
   prepare-release:
     docker:
-      - image: circleci/python:3.7.10
+      - image: circleci/python:3.7.12
     steps:
       - checkout
       - run:
@@ -108,10 +83,9 @@ jobs:
 
   pypi:
     docker:
-      - image: python:3.6.13
+      - image: python:3.7.12
     steps:
       - checkout
-      - <<: *setup-env
       - attach_workspace:
           at: tmp
       - run:
@@ -144,12 +118,10 @@ workflows:
   version: 2
   test:
     jobs:
-      - python-3.6-test
       - python-3.7-test
       - python-3.8-test
       - coverage:
           requires:
-            - python-3.6-test
             - python-3.7-test
             - python-3.8-test
       - lint
