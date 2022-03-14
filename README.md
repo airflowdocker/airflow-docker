@@ -12,6 +12,8 @@ Description
 An opinionated implementation of exclusively using airflow
 DockerOperators for all Operators.
 
+In the following examples, the `Task Code` section is the actual code contained in the image used in the `Dag Code` section.
+
 Default Operator
 ----------------
 
@@ -66,6 +68,8 @@ from airflow_docker_helper import client
 client.branch_to_tasks(['task1', 'task2'])
 ```
 
+where 'task1' and 'task2' reference the `task_id` of tasks in the Dag itself.
+
 Short Circuit Operator
 ----------------------
 
@@ -87,6 +91,8 @@ from airflow_docker_helper import client
 
 client.short_circuit()  # This task will short circuit if this function gets called
 ```
+
+This will skip all downstream tasks
 
 Context Usage
 -------------
